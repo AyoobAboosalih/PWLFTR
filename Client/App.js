@@ -4,7 +4,7 @@ import { View, StyleSheet, Button } from 'react-native';
 import { Video, AVPlaybackStatus } from 'expo-av';
 //import Video from 'react-native-video';
 //import video from '0.mp4'
-
+import customViedo from './test.mp4'
 
 
 export default function App() {
@@ -15,10 +15,8 @@ export default function App() {
     <View style={styles.container}>
       <Video
         ref={video}
-        style={{flex: 1}}
-        source={{
-          uri: 'https://www.w3schools.com/html/mov_bbb.mp4',
-        }}
+        style={styles.video}
+        source={customViedo}
         useNativeControls
         resizeMode="contain"
         isLooping
