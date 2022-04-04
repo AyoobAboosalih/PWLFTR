@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, Button } from 'react-native';
 import { Video, AVPlaybackStatus } from 'expo-av';
 import testVideo from '../../test.mp4'
-import { DocumentPicker, ImagePicker } from 'expo';
+import * as DocumentPicker from 'expo-document-picker';
 
 _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -12,13 +12,13 @@ _pickDocument = async () => {
 }
 
 
-function InputVideoScreen() {
-    const video = React.useRef(null);
+export default function InputVideoScreen() {
+    //const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
     return (
       <View style={styles.container}>
         <Video
-          ref={video}
+          //ref={video}
           style={styles.video}
           source={testVideo}
           useNativeControls
@@ -34,7 +34,7 @@ function InputVideoScreen() {
     )
 }
 
-export default InputVideoScreen
+
 
 
 const styles = StyleSheet.create({
