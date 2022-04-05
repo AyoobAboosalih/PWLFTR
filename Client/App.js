@@ -1,32 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import InputVideoScreen from './Views/InputVideoScreen';
-
-
+import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
-  
   return (
     <View style={styles.container}>
-      <InputVideoScreen/>
+      <Text style={styles.textStyle}>Hello World</Text>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  video: {
-    alignSelf: 'center',
-    width: 320,
-    height: 200,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'center',
   },
+  textStyle: {
+    color: 'blue',
+    fontWeight: 'bold',
+    fontSize: 30,
+    textAlign: 'center'
+  }
 });
