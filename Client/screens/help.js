@@ -1,7 +1,7 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 
-function help() {
+function Help() {
   return (
     <View>
         <Text>
@@ -11,4 +11,4 @@ function help() {
   )
 }
 
-export default help
+export default Help
