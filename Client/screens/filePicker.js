@@ -50,4 +50,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  uri: {
+    paddingBottom: 8,
+    paddingHorizontal: 18,
+  },
 });
