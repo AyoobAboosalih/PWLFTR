@@ -8,7 +8,7 @@ import Home from './screens/home';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
+  return (  
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Home"
