@@ -10,9 +10,10 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import DocumentPicker, {types} from 'react-native-document-picker';
+import * as ImagePicker from 'react-native-image-picker';
 
 function FilePicker() {
-  const [fileResponse, setFileResponse] = useState(null);
+  const [fileResponse, setFileResponse] = useState([]);
 
   useEffect(() => {
     if (fileResponse) {
@@ -20,13 +21,28 @@ function FilePicker() {
     }
   }, [fileResponse]);
 
+  // const handleDocumentSelection = async () => {
+  //   try {
+  //     const response = await DocumentPicker.pick({
+  //       presentationStyle: 'fullScreen',
+  //       type: types.video,
+  //     });
+  //     setFileResponse(response);
+  //   } catch (error) {
+  //     console.log('This is selection error' + error);
+  //   }
+  // };
+
   const handleDocumentSelection = async () => {
     try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-        type: types.video,
-      });
-      setFileResponse(response);
+      ImagePicker.launchImageLibrary(
+        {mediaType: 'video', includeBase64: true},
+        response => {
+          console.log(response);
+          setFileResponse(response);
+          console.log(fileResponse);
+        },
+      );
     } catch (error) {
       console.log('This is selection error' + error);
     }
@@ -36,8 +52,8 @@ function FilePicker() {
     const data = new FormData();
     data.append('video', {
       uri: response.uri,
-      type: response.type,
-      name: response.name,
+      type: 'video/mp4',
+      name: 'video.mp4',
     });
 
     if (data) {
@@ -64,7 +80,7 @@ function FilePicker() {
   return (
     <SafeAreaView>
       <StatusBar barStyle={'dark-content'} />
-      {(fileResponse || []).map((file, index) => (
+      {/* {(fileResponse || []).map((file, index) => (
         <Text
           key={index.toString()}
           style={styles.uri}
@@ -72,7 +88,7 @@ function FilePicker() {
           ellipsizeMode={'middle'}>
           {file?.uri}
         </Text>
-      ))}
+      ))} */}
       <Button title="Select 📑" onPress={handleDocumentSelection} />
     </SafeAreaView>
   );
