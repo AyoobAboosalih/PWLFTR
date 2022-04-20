@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,35 +8,48 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import axios from 'axios';
 import DocumentPicker, {types} from 'react-native-document-picker';
 
 function FilePicker() {
-  const [fileResponse, setFileResponse] = useState([]);
+  const [fileResponse, setFileResponse] = useState(null);
 
-  const handleDocumentSelection = useCallback(async () => {
+  useEffect(() => {
+    if (fileResponse) {
+      getVideoResponse(fileResponse);
+    }
+  }, [fileResponse]);
+
+  const handleDocumentSelection = async () => {
     try {
       const response = await DocumentPicker.pick({
         presentationStyle: 'fullScreen',
         type: types.video,
       });
-      console.log(response);
-      const data = new FormData();
-      data.append('name', 'testName'); // you can append anyone.
-      data.append('photo', {
-        uri: response.uri,
-        type: response.type,
-        name: response.name,
-      });
+      setFileResponse(response);
+    } catch (error) {
+      console.log('This is selection error' + error);
+    }
+  };
 
-      fetch('http://192.168.1.4:3000/video', {
-        method: 'post',
-        headers: {
+  const getVideoResponse = response => {
+    const data = new FormData();
+    data.append('video', {
+      uri: response.uri,
+      type: response.type,
+      name: response.name,
+    });
+
+    if (data) {
+      axios
+        .post('http://localhost:5000/video', data, {
           'Content-Type': 'multipart/form-data',
-        },
-        body: data,
-      })
+        })
         .then(res => {
           console.log('this is response' + res);
+        })
+        .then(data => {
+          console.log(data);
         })
         .catch(function (error) {
           console.log(
@@ -45,16 +58,13 @@ function FilePicker() {
           );
           throw error;
         });
-      setFileResponse(response);
-    } catch (e) {
-      console.log(e);
     }
-  }, []);
+  };
 
   return (
     <SafeAreaView>
       <StatusBar barStyle={'dark-content'} />
-      {fileResponse.map((file, index) => (
+      {(fileResponse || []).map((file, index) => (
         <Text
           key={index.toString()}
           style={styles.uri}

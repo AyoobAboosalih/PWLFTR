@@ -7,15 +7,15 @@ app = Flask(__name__)
 
 # Memeber API Route
 
-@app.route("/video", methods=['GET', 'POST'])
+@app.route("/video", methods=['GET','POST'])
 def members():
     if(request.method == "POST"):
         bytesOfVideo = request.get_data()
+        print(bytesOfVideo)
         with open('video.mp4', 'wb') as out:
             out.write(bytesOfVideo)
-        return "Video read"
-    return{"members": ["Member1","Member2","Member3"]}
-
+        return "Video readdddddd"
+    return "Hello worlds"
 
 if __name__ == "__main__":
-    app.run(host = '192.168.1.4', port=3000 ,debug=True)
+    app.run(debug=True)
