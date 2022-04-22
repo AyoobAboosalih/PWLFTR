@@ -7,9 +7,10 @@ import {
   View,
   TouchableOpacity,
   StatusBar,
+  Platform,
 } from 'react-native';
 import axios from 'axios';
-import DocumentPicker, {types} from 'react-native-document-picker';
+import * as ImagePicker from 'react-native-image-picker';
 
 function FilePicker() {
   const [fileResponse, setFileResponse] = useState(null);
@@ -22,49 +23,51 @@ function FilePicker() {
 
   const handleDocumentSelection = async () => {
     try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-        type: types.video,
-      });
-      setFileResponse(response);
+      ImagePicker.launchImageLibrary(
+        {
+          mediaType: 'video',
+        },
+        res => {
+          if (res) {
+            console.log(res);
+            setFileResponse(res.assets[0]);
+          }
+        },
+      );
     } catch (error) {
       console.log('This is selection error' + error);
     }
   };
 
   const getVideoResponse = response => {
-    const data = new FormData();
-    data.append('video', {
-      uri: response.uri,
-      type: response.type,
-      name: response.name,
+    let formData = new FormData();
+    formData.append('videoFile', {
+      name: response?.type?.substr(6),
+      type: response?.type,
+      uri:
+        Platform.OS !== 'android' ? 'file://' + response?.uri : response?.uri,
     });
 
-    if (data) {
-      axios
-        .post('http://localhost:5000/video', data, {
+    console.log(response?.type?.substr(6));
+
+    try {
+      fetch(`http://localhost:5000/processing`, {
+        method: 'post',
+        headers: {
           'Content-Type': 'multipart/form-data',
-        })
-        .then(res => {
-          console.log('this is response' + res);
-        })
-        .then(data => {
-          console.log(data);
-        })
-        .catch(function (error) {
-          console.log(
-            'There has been a problem with your fetch operation: ' +
-              error.message,
-          );
-          throw error;
-        });
+        },
+        body: formData,
+      });
+    } catch (error) {
+      console.log('error : ' + error);
+      return error;
     }
   };
 
   return (
     <SafeAreaView>
       <StatusBar barStyle={'dark-content'} />
-      {(fileResponse || []).map((file, index) => (
+      {/* {(fileResponse || []).map((file, index) => (
         <Text
           key={index.toString()}
           style={styles.uri}
@@ -72,7 +75,7 @@ function FilePicker() {
           ellipsizeMode={'middle'}>
           {file?.uri}
         </Text>
-      ))}
+      ))} */}
       <Button title="Select 📑" onPress={handleDocumentSelection} />
     </SafeAreaView>
   );
