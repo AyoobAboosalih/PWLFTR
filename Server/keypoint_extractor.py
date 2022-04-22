@@ -96,4 +96,3 @@ def process_video(video):
 def squat_validator(sequence):
     res = model.predict(np.expand_dims(sequence, axis=0))
     return Squat_result[np.argmax(res)]
-
