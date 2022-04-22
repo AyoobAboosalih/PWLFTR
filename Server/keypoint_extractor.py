@@ -9,6 +9,7 @@ from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.callbacks import TensorBoard
 
 Squat_result = np.array(['Valid', 'Invalid'])
+model = load_model("PWLFTR_180.h5")
 
 #Initializing Media pipe model and drawing tools
 mp_holistic = mp.solutions.holistic # Holistic model
@@ -93,7 +94,6 @@ def process_video(video):
 
 
 def squat_validator(sequence):
-    model = load_model("PWLFTR_240.h5")
     res = model.predict(np.expand_dims(sequence, axis=0))
     return Squat_result[np.argmax(res)]
 
