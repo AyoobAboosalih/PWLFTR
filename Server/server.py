@@ -21,7 +21,7 @@ def process():
     squat_result = squat_validator(sequence)
     print(squat_result)
 
-    return jsonify({"squat_result" : squat_result})
+    return squat_result
 
 if __name__ == "__main__":
     app.run(debug=True)

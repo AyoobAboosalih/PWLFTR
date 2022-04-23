@@ -39,7 +39,7 @@ function FilePicker() {
     }
   };
 
-  const getVideoResponse = response => {
+  const getVideoResponse = async response => {
     let formData = new FormData();
     formData.append('videoFile', {
       name: response?.type?.substr(6),
@@ -48,16 +48,15 @@ function FilePicker() {
         Platform.OS !== 'android' ? 'file://' + response?.uri : response?.uri,
     });
 
-    console.log(response?.type?.substr(6));
-
     try {
-      fetch(`http://localhost:5000/processing`, {
+      let response = await fetch(`http://localhost:5000/processing`, {
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data',
         },
         body: formData,
       });
+      let result = await response.text();
     } catch (error) {
       console.log('error : ' + error);
       return error;
@@ -67,15 +66,6 @@ function FilePicker() {
   return (
     <SafeAreaView>
       <StatusBar barStyle={'dark-content'} />
-      {/* {(fileResponse || []).map((file, index) => (
-        <Text
-          key={index.toString()}
-          style={styles.uri}
-          numberOfLines={1}
-          ellipsizeMode={'middle'}>
-          {file?.uri}
-        </Text>
-      ))} */}
       <Button title="Select 📑" onPress={handleDocumentSelection} />
     </SafeAreaView>
   );
