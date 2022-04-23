@@ -1,5 +1,5 @@
 from distutils.log import debug
-from flask import Flask, request
+from flask import Flask, jsonify, request
 from PIL import Image
 import os
 from keypoint_extractor import *
@@ -14,14 +14,14 @@ def process():
     file = request.files['videoFile']
     #print(file)
     UPLOAD_FOLDER = './upload'
-    path = os.path.join(UPLOAD_FOLDER, "test-vid" + ".mp4")
+    path = os.path.join(UPLOAD_FOLDER, file.name + ".mp4")
     file.save(path)
 
     sequence = process_video(path)
     squat_result = squat_validator(sequence)
     print(squat_result)
 
-    return "works"
+    return jsonify({"squat_result" : squat_result})
 
 if __name__ == "__main__":
     app.run(debug=True)
