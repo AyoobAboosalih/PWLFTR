@@ -4,11 +4,11 @@ import os
 import tensorflow as tf
 import mediapipe as mp
 
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import LSTM, Dense
-from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.models import load_model
 
 Squat_result = np.array(['Valid', 'Invalid'])
+model = load_model("PWLFTR_180.h5")
+longest_sequence = np.load("Longest_Sequence.npy")
 
 #Initializing Media pipe model and drawing tools
 mp_holistic = mp.solutions.holistic # Holistic model
@@ -55,7 +55,8 @@ def extract_keypoints(results):
 
 def process_video(video):
     # 1. New detection variables
-    sequence_for_prediction = []
+    sequence_for_prediction = [longest_sequence]
+    window = []
     cap = cv2.VideoCapture(video)
     # Set mediapipe model
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -77,7 +78,7 @@ def process_video(video):
             keypoints = extract_keypoints(results)
             #sequence.insert(0,keypoints)
             #sequence = sequence[:30]
-            sequence_for_prediction.append(keypoints)
+            window.append(keypoints)
 
             # Show to screen
             # dim = scale_video(30)
@@ -89,11 +90,12 @@ def process_video(video):
                 break
         cap.release()
         cv2.destroyAllWindows()
-        return sequence_for_prediction
+        sequence_for_prediction.append(window)
+        padded_sequence = tf.keras.preprocessing.sequence.pad_sequences(sequence_for_prediction, maxlen=191)
+        seq_to_predict = padded_sequence[1]       
+        return seq_to_predict
 
 
 def squat_validator(sequence):
-    model = load_model("PWLFTR_240.h5")
     res = model.predict(np.expand_dims(sequence, axis=0))
     return Squat_result[np.argmax(res)]
-
