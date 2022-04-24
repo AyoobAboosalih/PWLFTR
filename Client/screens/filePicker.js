@@ -2,18 +2,19 @@ import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
-  SafeAreaView,
   Button,
   View,
-  TouchableOpacity,
   StatusBar,
   Platform,
+  Pressable,
+  ActivityIndicator,
 } from 'react-native';
-import axios from 'axios';
 import * as ImagePicker from 'react-native-image-picker';
 
 function FilePicker() {
   const [fileResponse, setFileResponse] = useState(null);
+  const [result, setResult] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
     if (fileResponse) {
@@ -29,7 +30,6 @@ function FilePicker() {
         },
         res => {
           if (res) {
-            console.log(res);
             setFileResponse(res.assets[0]);
           }
         },
@@ -49,6 +49,7 @@ function FilePicker() {
     });
 
     try {
+      setisLoading(true);
       let response = await fetch(`http://localhost:5000/processing`, {
         method: 'post',
         headers: {
@@ -57,17 +58,36 @@ function FilePicker() {
         body: formData,
       });
       let result = await response.text();
+      setResult(result);
+      setisLoading(false);
     } catch (error) {
       console.log('error : ' + error);
       return error;
     }
   };
 
+  const SquatResult = () => {
+    if (result) {
+      return (
+        <Text style={styles.resultText}>{`Squat result is: ${result}`}</Text>
+      );
+    }
+    return <Text></Text>;
+  };
+
   return (
-    <SafeAreaView>
-      <StatusBar barStyle={'dark-content'} />
-      <Button title="Select 📑" onPress={handleDocumentSelection} />
-    </SafeAreaView>
+    <View style={styles.container}>
+      {/* <Text style={styles.resultText}>{`Squat result is: ${result}`}</Text> */}
+      <Pressable style={styles.button} onPress={handleDocumentSelection}>
+        <Text style={styles.text}>{'Select 📑'}</Text>
+      </Pressable>
+      <SquatResult />
+      <ActivityIndicator
+        style={styles.loading}
+        size="large"
+        animating={isLoading}
+      />
+    </View>
   );
 }
 
@@ -81,8 +101,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  uri: {
-    paddingBottom: 8,
-    paddingHorizontal: 18,
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 25,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    backgroundColor: '#2196f3',
+    margin: 10,
+  },
+  text: {
+    fontSize: 24,
+    lineHeight: 25,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+
+  resultText: {
+    fontSize: 16,
+    lineHeight: 20,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'black',
+  },
+
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#00ff00',
   },
 });

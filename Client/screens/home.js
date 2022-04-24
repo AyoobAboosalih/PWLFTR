@@ -1,39 +1,27 @@
-import React, { useState, useCallback } from 'react'
+import React, {useState, useCallback} from 'react';
 import {
   Text,
   StyleSheet,
   SafeAreaView,
   Button,
+  Pressable,
   View,
   TouchableOpacity,
 } from 'react-native';
 import FilePicker from './filePicker';
 
-
 function Home({navigation}) {
-  const [fileResponse, setFileResponse] = useState([]);
-  const handleDocumentSelection = useCallback(async () => {
-    try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-      });
-      setFileResponse(response);
-    } catch (err) {
-      console.warn(err);
-    }
-  }, []);
+  const navigateToHelp = () => {
+    navigation.navigate('Help');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>This is Home</Text>
-      <FilePicker/>
-      <TouchableOpacity
-        style={{backgroundColor: 'black'}}
-        onPress={() => {
-          navigation.navigate('Help');
-        }}>
-        <Text style={{color: 'white'}}>Go To Help</Text>
-      </TouchableOpacity>
+      <FilePicker />
+      {/* <Button style={styles.button} title="Help" onPress={navigateToHelp} /> */}
+      <Pressable style={styles.button} onPress={navigateToHelp}>
+        <Text style={styles.text}>{'Help'}</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
@@ -46,5 +34,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 40,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'purple',
+    marginTop: 10,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
 });

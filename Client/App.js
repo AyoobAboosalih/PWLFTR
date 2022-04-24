@@ -8,14 +8,12 @@ import Home from './screens/home';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (  
+  return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Home">
-          {props => <Home {...props} options={{title: 'overview'}} />}
-        </Stack.Screen>
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Help" component={Help} />
       </Stack.Navigator>
     </NavigationContainer>
