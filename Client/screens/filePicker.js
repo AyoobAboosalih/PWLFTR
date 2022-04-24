@@ -81,12 +81,12 @@ function FilePicker() {
       <Pressable style={styles.button} onPress={handleDocumentSelection}>
         <Text style={styles.text}>{'Select 📑'}</Text>
       </Pressable>
-      <SquatResult />
       <ActivityIndicator
         style={styles.loading}
         size="large"
         animating={isLoading}
       />
+      <SquatResult />
     </View>
   );
 }
@@ -124,16 +124,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'black',
-  },
-
-  loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#00ff00',
   },
 });
