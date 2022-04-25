@@ -65,7 +65,7 @@ def process_video(video):
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
     frame_size = (frame_width,frame_height)
-    fps = 30
+    fps = int(cap.get(5))
     output = cv2.VideoWriter('anotatedVideo.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, frame_size)
 
 
@@ -95,6 +95,8 @@ def process_video(video):
             # dim = scale_video(30)
             # image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
             cv2.imshow('OpenCV Feed', image)
+            output.write(image)
+
 
             # Break gracefully
             if cv2.waitKey(10) & 0xFF == ord('q'):
