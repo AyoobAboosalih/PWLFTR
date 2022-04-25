@@ -57,7 +57,18 @@ def process_video(video):
     # 1. New detection variables
     sequence_for_prediction = [longest_sequence]
     window = []
+
+    # Capturing Video Stream
     cap = cv2.VideoCapture(video)
+
+    # Setting up Video Writer
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+    frame_size = (frame_width,frame_height)
+    fps = 30
+    output = cv2.VideoWriter('anotatedVideo.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, frame_size)
+
+
     # Set mediapipe model
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         while cap.isOpened():
@@ -88,8 +99,11 @@ def process_video(video):
             # Break gracefully
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
+
         cap.release()
+        output.release()
         cv2.destroyAllWindows()
+
         sequence_for_prediction.append(window)
         padded_sequence = tf.keras.preprocessing.sequence.pad_sequences(sequence_for_prediction, maxlen=191)
         seq_to_predict = padded_sequence[1]       
