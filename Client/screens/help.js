@@ -8,15 +8,15 @@ function Help() {
       <Text
         style={
           styles.bulletpoints
-        }>{`\u2022 You need to take a front facing video of yourself preforming a powerlifting squat`}</Text>
+        }>{`1) You need to take a front facing video of yourself preforming a powerlifting squat`}</Text>
       <Text
         style={
           styles.bulletpoints
-        }>{`\u2022 Crop the video to the start and end of the movement`}</Text>
+        }>{`2) Crop the video to the start and end of the movement`}</Text>
       <Text
         style={
           styles.bulletpoints
-        }>{`\u2022 Input the video by clicking the "Select 📑" button on the home page`}</Text>
+        }>{`3) Input the video by clicking the "Select 📑" button on the home page`}</Text>
     </View>
   );
 }
@@ -38,12 +38,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
-    textDecorationLine: 'underline',
   },
 
   bulletpoints: {
+    fontFamily: 'Cochin',
     fontSize: 18,
-    fontWeight: 'bold',
     color: 'black',
     padding: 10,
   },
