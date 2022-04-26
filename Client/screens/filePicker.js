@@ -50,7 +50,8 @@ function FilePicker() {
 
     try {
       setisLoading(true);
-      let response = await fetch(`http://localhost:5000/processing`, {
+      setResult(null);
+      let response = await fetch(`http://localhost:5000/processvideo`, {
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data',

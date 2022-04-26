@@ -7,7 +7,11 @@ import mediapipe as mp
 from tensorflow.keras.models import load_model
 
 Squat_result = np.array(['Valid', 'Invalid'])
+
+# Loading model and longest sequence
 model = load_model("PWLFTR_180.h5")
+
+# Array is used to pad the recieved sequence to the shape the Deep Learning Model Accepts
 longest_sequence = np.load("Longest_Sequence.npy")
 
 #Initializing Media pipe model and drawing tools
@@ -52,10 +56,11 @@ def extract_keypoints(results):
     pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten() if results.pose_landmarks else np.zeros(33*4)
     return pose
 
-
+# Function to process input video
 def process_video(video):
-    # 1. New detection variables
+    # New detection variables
     sequence_for_prediction = [longest_sequence]
+
     window = []
 
     # Capturing Video Stream
@@ -87,20 +92,9 @@ def process_video(video):
 
             # 2. Prediction logic
             keypoints = extract_keypoints(results)
-            #sequence.insert(0,keypoints)
-            #sequence = sequence[:30]
             window.append(keypoints)
 
-            # Show to screen
-            # dim = scale_video(30)
-            # image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
-            cv2.imshow('OpenCV Feed', image)
             output.write(image)
-
-
-            # Break gracefully
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                break
 
         cap.release()
         output.release()
@@ -112,6 +106,7 @@ def process_video(video):
         return seq_to_predict
 
 
+# Function to apply model prediction to extracted sequence
 def squat_validator(sequence):
     res = model.predict(np.expand_dims(sequence, axis=0))
     return Squat_result[np.argmax(res)]
