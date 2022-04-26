@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
+import Video from 'react-native-video';
 
 function FilePicker() {
   const [fileResponse, setFileResponse] = useState(null);
@@ -76,9 +77,27 @@ function FilePicker() {
     return <Text></Text>;
   };
 
+  const DisplayVideo = () => {
+    if (fileResponse) {
+      return (
+        <Video
+          source={{uri: fileResponse?.uri}} // Can be a URL or a local file.
+          ref={ref => {
+            this.player = ref;
+          }} // Store reference
+          onBuffer={this.onBuffer} // Callback when remote video is buffering
+          onError={this.videoError} // Callback when video cannot be loaded
+          style={styles.backgroundVideo}
+        />
+      );
+    }
+    return <Text></Text>;
+  };
+
   return (
     <View style={styles.container}>
       {/* <Text style={styles.resultText}>{`Squat result is: ${result}`}</Text> */}
+      <DisplayVideo />
       <Pressable style={styles.button} onPress={handleDocumentSelection}>
         <Text style={styles.text}>{'Select 📑'}</Text>
       </Pressable>
