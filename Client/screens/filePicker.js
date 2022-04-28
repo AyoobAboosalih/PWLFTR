@@ -1,14 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  StyleSheet,
-  Button,
-  View,
-  StatusBar,
-  Platform,
-  Pressable,
-  ActivityIndicator,
-} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {Text, StyleSheet, View, Platform, Pressable} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 
 function FilePicker() {
@@ -67,6 +58,17 @@ function FilePicker() {
     }
   };
 
+  const LoadingText = () => {
+    if (isLoading) {
+      return (
+        <Text style={styles.loadingText}>
+          {'Your squat is being validated....'}
+        </Text>
+      );
+    }
+    return <Text></Text>;
+  };
+
   const SquatResult = () => {
     if (result) {
       return (
@@ -78,15 +80,10 @@ function FilePicker() {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.resultText}>{`Squat result is: ${result}`}</Text> */}
       <Pressable style={styles.button} onPress={handleDocumentSelection}>
         <Text style={styles.text}>{'Select 📑'}</Text>
       </Pressable>
-      <ActivityIndicator
-        style={styles.loading}
-        size="large"
-        animating={isLoading}
-      />
+      <LoadingText />
       <SquatResult />
     </View>
   );
@@ -125,5 +122,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'black',
+    paddingTop: 10,
+  },
+
+  loadingText: {
+    fontSize: 16,
+    lineHeight: 20,
+    fontStyle: 'italic',
+    letterSpacing: 0.25,
+    color: 'black',
+    paddingTop: 10,
   },
 });
