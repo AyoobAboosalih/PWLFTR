@@ -49,8 +49,10 @@ function FilePicker() {
         },
         body: formData,
       });
-      let result = await response.text();
-      setResult(result);
+      console.log(response.json());
+      console.log('THIE AVOCE IS THE RSULT');
+      // let result = await response.text();
+      // setResult(result);
       setisLoading(false);
     } catch (error) {
       console.log('error : ' + error);
