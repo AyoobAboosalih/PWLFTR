@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-import os
 import tensorflow as tf
 import mediapipe as mp
 
 from tensorflow.keras.models import load_model
 
+# Action we will predict
 Squat_result = np.array(['Valid', 'Invalid'])
 
 # Loading model and longest sequence
