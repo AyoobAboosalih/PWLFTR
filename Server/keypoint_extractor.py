@@ -58,7 +58,7 @@ def extract_keypoints(results):
 
 # Function to process input video
 def process_video(video):
-    # New detection variables
+    # Adding longes sequence to be utilized for sequence padding
     sequence_for_prediction = [longest_sequence]
 
     window = []
@@ -90,17 +90,21 @@ def process_video(video):
             # Draw landmarks
             draw_styled_landmarks(image, results)
 
-            # 2. Prediction logic
+            # 2. Adding data from each frame into a temporary array
             keypoints = extract_keypoints(results)
             window.append(keypoints)
 
+            # Writing image out to local storage
             output.write(image)
 
         cap.release()
         output.release()
         cv2.destroyAllWindows()
 
+        # Adding the entire sequence of frame data into the array to be padded
         sequence_for_prediction.append(window)
+
+        # Padding the new sequnce to fit the shape required by the Deep Learning model
         padded_sequence = tf.keras.preprocessing.sequence.pad_sequences(sequence_for_prediction, maxlen=191)
         seq_to_predict = padded_sequence[1]       
         return seq_to_predict

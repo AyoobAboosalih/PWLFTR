@@ -7,7 +7,7 @@ from keypoint_extractor import *
 app = Flask(__name__)
 
 # Video API Route
-@app.route('/processvideo',methods=['GET', 'POST'])
+@app.route('/processvideo',methods=['POST'])
 def process():
     
     # Read File sent from front-end
