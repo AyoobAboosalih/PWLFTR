@@ -1,8 +1,13 @@
-import React, {useState, useEffect, useRef} from 'react';
+// Component which handles all functionalities with regard
+// to selecting and sending file from user device storage
+// to the backend for validation
+
+import React, {useState, useEffect} from 'react';
 import {Text, StyleSheet, View, Platform, Pressable} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 
 function FilePicker() {
+  // Initalization of variables to be used
   const [fileResponse, setFileResponse] = useState(null);
   const [result, setResult] = useState(null);
   const [isLoading, setisLoading] = useState(false);
@@ -13,6 +18,7 @@ function FilePicker() {
     }
   }, [fileResponse]);
 
+  // Function to select video from device storage
   const handleDocumentSelection = async () => {
     try {
       ImagePicker.launchImageLibrary(
@@ -30,6 +36,7 @@ function FilePicker() {
     }
   };
 
+  // API call to process and receive video validation
   const getVideoResponse = async response => {
     let formData = new FormData();
     formData.append('videoFile', {
@@ -58,6 +65,8 @@ function FilePicker() {
     }
   };
 
+  // Component to conditionally render loding message
+  // to the user while video is being validated
   const LoadingText = () => {
     if (isLoading) {
       return (
@@ -69,6 +78,7 @@ function FilePicker() {
     return <Text></Text>;
   };
 
+  // Component to conditionally render video validation result
   const SquatResult = () => {
     if (result) {
       return (
@@ -78,6 +88,7 @@ function FilePicker() {
     return <Text></Text>;
   };
 
+  // Main View
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={handleDocumentSelection}>

@@ -1,3 +1,6 @@
+// Help page of the appplication
+// It's give a brief documentation on how to use the application.
+
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 

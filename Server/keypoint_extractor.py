@@ -9,7 +9,7 @@ from tensorflow.keras.models import load_model
 Squat_result = np.array(['Valid', 'Invalid'])
 
 # Loading model and longest sequence
-model = load_model("PWLFTR_180.h5")
+model = load_model("PWLFTR.h5")
 
 # Array is used to pad the recieved sequence to the shape the Deep Learning Model Accepts
 longest_sequence = np.load("Longest_Sequence.npy")

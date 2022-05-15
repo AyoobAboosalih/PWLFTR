@@ -1,13 +1,9 @@
-import React, {useState, useCallback} from 'react';
-import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Button,
-  Pressable,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+// The defualt screen of the application
+// User can choose to upload a video for validation
+// or navigate to the help page to understand how to use the application.
+
+import React from 'react';
+import {Text, StyleSheet, SafeAreaView, Pressable} from 'react-native';
 import FilePicker from './filePicker';
 
 function Home({navigation}) {
