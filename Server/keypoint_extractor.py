@@ -71,7 +71,7 @@ def process_video(video):
     frame_height = int(cap.get(4))
     frame_size = (frame_width,frame_height)
     fps = int(cap.get(5))
-    output = cv2.VideoWriter('anotatedVideo.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, frame_size)
+    output = cv2.VideoWriter('results/anotatedVideo.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, frame_size)
 
 
     # Set mediapipe model
@@ -114,3 +114,14 @@ def process_video(video):
 def squat_validator(sequence):
     res = model.predict(np.expand_dims(sequence, axis=0))
     return Squat_result[np.argmax(res)]
+
+# Function to save result to local storage
+def save_result(result):
+    #open text file
+    text_file = open('results/squat_result.txt', "w")
+    
+    #write string to file
+    text_file.write(result)
+    
+    #close file
+    text_file.close()

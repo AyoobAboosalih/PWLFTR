@@ -13,7 +13,7 @@ Squat_result = np.array(['Valid', 'Invalid'])
 #Loading Validation Data
 Validation_Sequences = np.load("Validation_Sequences.npy")
 
-model = load_model('best_model_sigmoid-dropout-nuerons.h5')
+model = load_model('best_model_sigmoid-dropout.h5')
 
 # validation data includes 10 Valid and Invalid Squats
 y_true = ["Valid", "Valid", "Valid", "Valid", "Valid", "Valid", "Valid", "Valid", "Valid", "Valid", "Invalid",
@@ -27,3 +27,4 @@ for seq in Validation_Sequences:
     y_pred.append(result)
 
 accuracy_score(y_true, y_pred)
+

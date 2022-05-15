@@ -1,6 +1,4 @@
-from distutils.log import debug
-from flask import Flask, jsonify, request
-from PIL import Image
+from flask import Flask, request
 import os
 from keypoint_extractor import *
 
@@ -21,6 +19,9 @@ def process():
     # Pre-processing and squat validity prodiction
     sequence = process_video(path)
     squat_result = squat_validator(sequence)
+
+    # Save result to local storage
+    save_result(squat_result)
 
     return squat_result
 
